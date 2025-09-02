@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adarsh Bajpai | AI/ML Engineer | Developer | Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Enable class-based dark mode for Tailwind CDN
+        tailwind.config = { darkMode: 'class' };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-color 300ms ease, color 300ms ease;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: -1;
+            transition: background 300ms ease;
+        }
+        body[data-theme="light"]::before { background: rgba(255,255,255,0.25); }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #d1d5db;
+        }
+
+        /* Continuous vertical line for Roles timeline */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px; /* matches dots position */
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #d1d5db;
+        }
+        
+        .skill-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .skill-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+
+        /* Larger section heading style helper */
+        .section-heading { font-weight: 800; text-align: center; }
+
+        /* Theme transition helper */
+        .theme-transition {
+            transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body class="bg-gray-900 text-gray-100 theme-transition" data-theme="dark">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/70 dark:bg-gray-900/70 backdrop-blur shadow-sm z-50 theme-transition">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-xl font-bold gradient-text">Adarsh Bajpai</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">About</a>
+                    <a href="#skills" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Skills</a>
+                    <a href="#projects" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Projects</a>
+                    <a href="#experience" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Roles & Responsibilities</a>
+                    <a href="#contact" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Contact</a>
+                    <button id="theme-toggle" class="ml-2 text-gray-600 hover:text-blue-600 transition" aria-label="Toggle theme">
+                        <i id="theme-toggle-icon" class="fas fa-moon"></i>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="menu-toggle" class="text-gray-600 hover:text-blue-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur py-2 px-4 shadow-lg theme-transition">
+            <a href="#about" class="block py-2 text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">About</a>
+            <a href="#skills" class="block py-2 text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Skills</a>
+            <a href="#projects" class="block py-2 text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Projects</a>
+            <a href="#experience" class="block py-2 text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Roles & Responsibilities</a>
+            <a href="#contact" class="block py-2 text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Contact</a>
+            <button id="theme-toggle-mobile" class="block py-2 text-gray-600 hover:text-blue-600 transition" aria-label="Toggle theme">
+                Toggle Theme
+            </button>
+        </div>
+    </nav>
+
+    <!-- About Section at top (photo left, text right) -->
+    <section id="about" class="pt-28 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+            <div class="md:w-1/3 w-full flex md:block justify-center">
+                <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden ring-4 ring-white/30 shadow-2xl">
+                    <img src="profilephotojpg.jpg" alt="Adarsh Bajpai" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <div class="md:w-2/3 w-full">
+                <!-- EDIT: Name (About) -->
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-3 gradient-text">Adarsh Bajpai</h1>
+                <!-- EDIT: Title (About) -->
+                <h2 class="text-xl md:text-2xl text-gray-900 dark:text-gray-200 mb-4">AI/ML Engineer | Developer | Designer</h2>
+                <!-- EDIT: Intro paragraph 1 (About) -->
+                <p class="text-base md:text-lg text-gray-800 dark:text-gray-200 mb-3">Hi, I'm a Computer Science Engineering student specializing in Artificial Intelligence at NIIT University (2022–2026).</p>
+                <!-- EDIT: Intro paragraph 2 (About) -->
+                <p class="text-base md:text-lg text-gray-800 dark:text-gray-200 mb-6">I love building AI solutions and modern web applications with a smooth, polished experience. I merge deep learning expertise with UI/UX creativity, making projects that are both functional and visually engaging.</p>
+                <div class="flex flex-wrap gap-4">
+                    <!-- EDIT: CV file path -->
+                    <a href="Adarsh Bajpai CV.pdf" download class="px-6 py-3 bg-white/90 dark:bg-white/10 dark:hover:bg-white/20 text-gray-900 dark:text-white rounded-lg font-medium transition flex items-center gap-2 ring-1 ring-gray-200/70 dark:ring-white/20">
+                        <i class="fas fa-file-download"></i> Download CV
+                    </a>
+                    <a href="#contact" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transition">
+                        Contact Me
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
+        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text">Skills</h2>
+        
+        <!-- EDIT: Skills - Programming tiles -->
+        <div class="mb-10">
+            <h3 class="text-2xl md:text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400">Programming</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-python text-3xl text-gray-800 dark:text-blue-400 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Python</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-js text-3xl text-gray-800 dark:text-yellow-300 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">JavaScript</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-html5 text-3xl text-gray-800 dark:text-orange-300 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">HTML & CSS</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EDIT: Skills - ML & Deep Learning tiles -->
+        <div class="mb-10">
+            <h3 class="text-2xl md:text-3xl font-bold mb-6 text-purple-700 dark:text-purple-400">ML & Deep Learning</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-brain text-3xl text-gray-800 dark:text-purple-400 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Machine Learning</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-network-wired text-3xl text-gray-800 dark:text-fuchsia-300 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Deep Learning</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-sliders-h text-3xl text-gray-800 dark:text-green-300 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Feature Engineering</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EDIT: Skills - Frontend & Dev Tools tiles -->
+        <div class="mb-10">
+            <h3 class="text-2xl md:text-3xl font-bold mb-6 text-emerald-700 dark:text-emerald-400">Frontend & Dev Tools</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-react text-3xl text-gray-800 dark:text-sky-400 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">React.js</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-git-alt text-3xl text-gray-800 dark:text-orange-300 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Git</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-github text-3xl text-gray-800 dark:text-gray-100 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">GitHub</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-docker text-3xl text-gray-800 dark:text-blue-400 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Docker</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EDIT: Skills - Design & Creative tiles -->
+        <div class="mb-10">
+            <h3 class="text-2xl md:text-3xl font-bold mb-6 text-pink-700 dark:text-pink-400">Design & Creative</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-figma text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Figma</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-pen-nib text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Graphic Design</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fab fa-adobe text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Adobe Photoshop</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-film text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Premiere Pro</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-sun text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Adobe Lightroom</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-clapperboard text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">DaVinci Resolve</div>
+                </div>
+                <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
+                    <i class="fas fa-cube text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <div class="text-gray-900 dark:text-gray-100">Blender</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <!-- EDIT: Projects section heading -->
+        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text">Projects</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Project 1 -->
+            <div class="project-card bg-white/85 dark:bg-gray-800/85 backdrop-blur rounded-xl shadow-sm overflow-hidden transition duration-300 theme-transition">
+                <div class="h-48 bg-gradient-to-r from-blue-100 to-purple-100 flex items-center justify-center">
+                    <i class="fas fa-leaf text-6xl text-green-500"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Leaf Disease Detection System</h3>
+                    <p class="text-gray-800 dark:text-gray-200 mb-4">
+                        Built a deep learning model using U2-Net + ResNet for detecting crop diseases and estimating severity. Extended into a web app with bilingual results (English/Hindi), image upload/capture, severity scoring, and farmer-friendly guidance.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">Python</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">Deep Learning</span>
+                        <span class="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">U2-Net</span>
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full">ResNet</span>
+                    </div>
+                    <!-- EDIT: Project 1 link -->
+                    <a href="https://github.com/nameadarsh/Leaf_Disease_Detection_System" target="_blank" rel="noopener" class="text-blue-500 hover:text-blue-700 font-medium flex items-center">
+                        View Project <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="project-card bg-white/85 dark:bg-gray-800/85 backdrop-blur rounded-xl shadow-sm overflow-hidden transition duration-300 theme-transition">
+                <div class="h-48 bg-gradient-to-r from-green-100 to-blue-100 flex items-center justify-center">
+                    <i class="fas fa-spa text-6xl text-teal-500"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Zen Garden – Habit Tracker</h3>
+                    <p class="text-gray-800 dark:text-gray-200 mb-4">
+                        A productivity app that gamifies habit formation with an interactive 3D garden. Features: integrated analytics, to-do list, finance tracker, and focus pomodoro mode. Frontend created with React + Framer Motion for smooth animations.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">React</span>
+                        <span class="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">Framer Motion</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">Productivity</span>
+                        <span class="px-3 py-1 bg-red-100 text-red-800 text-sm rounded-full">3D Animation</span>
+                    </div>
+                    <!-- EDIT: Project 2 link -->
+                    <a href="https://github.com/Cryio/Zen_Garden" target="_blank" rel="noopener" class="text-blue-500 hover:text-blue-700 font-medium flex items-center">
+                        View Project <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roles & Responsibilities Section -->
+    <section id="experience" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text">Roles & Responsibilities</h2>
+        
+        <div class="space-y-8 max-w-3xl mx-auto relative timeline">
+            <!-- Future Opportunity -->
+            <div class="relative pl-8 timeline-item">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-gray-300 border-4 border-white"></div>
+                <div class="bg-white/85 dark:bg-gray-800/85 backdrop-blur p-6 rounded-xl shadow-sm theme-transition">
+                    <h3 class="text-xl font-bold mb-1">Hopefully You!</h3>
+                    <p class="text-gray-900 dark:text-gray-200">Looking forward to the next opportunity to contribute, innovate, and grow.</p>
+                </div>
+            </div>
+            <!-- Experience 1 -->
+            <div class="relative pl-8 timeline-item">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-gray-300 border-4 border-white"></div>
+                <div class="bg-white/85 dark:bg-gray-800/85 backdrop-blur p-6 rounded-xl shadow-sm theme-transition">
+                    <h3 class="text-xl font-bold mb-1">Event Organisation Team</h3>
+                    <p class="text-gray-900 dark:text-gray-200 mb-2">NIIT University (2 years)</p>
+                    <p class="text-gray-900 dark:text-gray-200">
+                        Managed convocations, cultural fests & parent visits. Coordinated logistics, vendors, and on-ground operations for large-scale university events.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Experience 2 -->
+            <div class="relative pl-8 timeline-item">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-gray-300 border-4 border-white"></div>
+                <div class="bg-white/85 dark:bg-gray-800/85 backdrop-blur p-6 rounded-xl shadow-sm theme-transition">
+                    <h3 class="text-xl font-bold mb-1">Production Team</h3>
+                    <p class="text-gray-900 dark:text-gray-200 mb-2">TEDx NIIT University</p>
+                    <p class="text-gray-900 dark:text-gray-200">
+                        Coordinated logistics, vendors, and on-ground staff for TEDx events. Managed stage setup, audio-visual equipment, and speaker requirements.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Experience 3 -->
+            <div class="relative pl-8 timeline-item">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-gray-300 border-4 border-white"></div>
+                <div class="bg-white/85 dark:bg-gray-800/85 backdrop-blur p-6 rounded-xl shadow-sm theme-transition">
+                    <h3 class="text-xl font-bold mb-1">Designer</h3>
+                    <p class="text-gray-900 dark:text-gray-200 mb-2">Vividha Art Club</p>
+                    <p class="text-gray-900 dark:text-gray-200">
+                        Created digital assets, stage designs, and led design execution for university events. Developed branding materials and promotional content.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education section removed as requested -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+        <!-- EDIT: Contact section heading -->
+        <h2 class="section-heading text-4xl md:text-5xl mb-4 gradient-text">Get in touch</h2>
+        <p class="text-gray-800 dark:text-gray-300 mb-8">Feel free to reach out.</p>
+        <div class="flex items-center justify-center gap-3 mb-8 text-gray-900 dark:text-gray-100">
+            <i class="fas fa-envelope text-xl"></i>
+            <!-- EDIT: Email address -->
+            <a href="mailto:abjpr.ind@gmail.com" class="underline hover:text-blue-600">abjpr.ind@gmail.com</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- EDIT: LinkedIn profile URL -->
+            <a href="https://www.linkedin.com/in/adarshbajpai11" target="_blank" rel="noopener" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur p-6 rounded-xl shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 theme-transition flex items-center justify-center gap-4">
+                <i class="fab fa-linkedin text-4xl text-gray-900 dark:text-gray-100"></i>
+                <span class="text-xl text-gray-900 dark:text-gray-100">LinkedIn</span>
+            </a>
+            <!-- EDIT: GitHub profile URL -->
+            <a href="https://github.com/nameadarsh" target="_blank" rel="noopener" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur p-6 rounded-xl shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 theme-transition flex items-center justify-center gap-4">
+                <i class="fab fa-github text-4xl text-gray-900 dark:text-gray-100"></i>
+                <span class="text-xl text-gray-900 dark:text-gray-100">GitHub</span>
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    
+                    // Scroll to target
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add animation classes when elements come into view
+        const observerOptions = {
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Theme toggle (default dark)
+        const htmlEl = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const themeIcon = document.getElementById('theme-toggle-icon');
+
+        function setTheme(dark) {
+            if (dark) {
+                htmlEl.classList.add('dark');
+                themeIcon?.classList.remove('fa-sun');
+                themeIcon?.classList.add('fa-moon');
+                document.body.classList.remove('bg-gray-50','text-gray-900');
+                document.body.classList.add('bg-gray-900','text-gray-100');
+                document.body.setAttribute('data-theme', 'dark');
+            } else {
+                htmlEl.classList.remove('dark');
+                themeIcon?.classList.remove('fa-moon');
+                themeIcon?.classList.add('fa-sun');
+                document.body.classList.remove('bg-gray-900','text-gray-100');
+                document.body.classList.add('bg-gray-50','text-gray-900');
+                document.body.setAttribute('data-theme', 'light');
+            }
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+        }
+
+        // Initialize theme from storage or default to dark
+        const storedTheme = localStorage.getItem('theme');
+        setTheme(storedTheme ? storedTheme === 'dark' : true);
+
+        function toggleTheme() {
+            const isDark = htmlEl.classList.contains('dark');
+            setTheme(!isDark);
+        }
+        themeToggle?.addEventListener('click', toggleTheme);
+        themeToggleMobile?.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>
+
+
