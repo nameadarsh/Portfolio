@@ -95,6 +95,140 @@
         .theme-transition {
             transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
         }
+        
+        /* AX: global utilities and animations */
+        :root {
+            --ax-duration: 340ms;
+            --ax-duration-long: 520ms;
+            --ax-ease: cubic-bezier(0.22, 1, 0.36, 1); /* easeOutCubic */
+            --ax-shadow: 0 10px 25px rgba(0,0,0,0.18);
+            --ax-glow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px rgba(0,140,255,0.35);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+        }
+
+        /* Hover elevation + glow */
+        .ax-hover {
+            transition: transform var(--ax-duration) var(--ax-ease), box-shadow var(--ax-duration) var(--ax-ease), filter var(--ax-duration) var(--ax-ease);
+            will-change: transform, box-shadow, filter;
+        }
+        .ax-hover:hover {
+            transform: translateY(-2px) scale(1.06);
+            box-shadow: var(--ax-shadow);
+        }
+        .ax-glow:hover { box-shadow: var(--ax-glow); }
+
+        /* Subtle floating (profile image, optional) */
+        @keyframes ax-float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+            100% { transform: translateY(0); }
+        }
+        .ax-float { animation: ax-float 7s ease-in-out infinite; }
+
+        /* Scroll reveal */
+        .ax-reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--ax-duration-long) var(--ax-ease), transform var(--ax-duration-long) var(--ax-ease); will-change: opacity, transform; }
+        .ax-visible { opacity: 1; transform: none; }
+
+        /* Typing effect caret (no FOUC) */
+        .ax-type-caret { border-right: 2px solid currentColor; }
+        @keyframes ax-caret { 50% { border-color: transparent; } }
+        .ax-typing { animation: ax-caret 1s step-end infinite; }
+
+        /* Project carousel */
+        .ax-img-wrap { position: relative; overflow: hidden; }
+        .ax-img-base, .ax-img-top {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .ax-img-top {
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity var(--ax-duration) var(--ax-ease);
+            will-change: opacity;
+        }
+
+        /* Carousel arrows */
+        .ax-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 36px; height: 36px; border-radius: 999px;
+            display: grid; place-items: center;
+            background: rgba(0,0,0,0.55);
+            color: #fff; font-size: 18px; line-height: 0;
+            opacity: 0; pointer-events: none;
+            transition: opacity var(--ax-duration) var(--ax-ease), background var(--ax-duration) var(--ax-ease);
+        }
+        .ax-arrow:hover { background: rgba(0,0,0,0.75); }
+        .ax-arrow-left { left: 8px; }
+        .ax-arrow-right { right: 8px; }
+        .ax-carousel-hover .ax-arrow { opacity: 1; pointer-events: auto; }
+
+        /* Back to top button */
+        .ax-backtotop {
+            width: 56px; height: 56px; border-radius: 999px;
+            display: grid; place-items: center;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white; font-size: 20px; font-weight: 600;
+            box-shadow: var(--ax-shadow);
+            transition: transform var(--ax-duration) var(--ax-ease), opacity var(--ax-duration) var(--ax-ease), box-shadow var(--ax-duration) var(--ax-ease);
+            transform: translateY(10px) scale(0.92);
+            opacity: 0; pointer-events: none;
+            z-index: 80;
+        }
+        .ax-backtotop.ax-show { transform: none; opacity: 1; pointer-events: auto; }
+        .ax-backtotop:hover { box-shadow: var(--ax-glow); transform: translateY(-2px) scale(1.03); }
+
+        /* Section header gradient - matches original design */
+        .ax-gradient-title {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* AX: nav link underline hover */
+        .ax-navlink { position: relative; }
+        .ax-navlink::after {
+            content: '';
+            position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform var(--ax-duration) var(--ax-ease);
+            border-radius: 2px;
+        }
+        .ax-navlink:hover::after { transform: scaleX(1); }
+
+        /* AX: project progress line */
+        .ax-progress { height: 3px; background: rgba(255,255,255,0.12); overflow: hidden; }
+        .ax-progress-fill { 
+            height: 100%; width: 0%; 
+            background: linear-gradient(90deg, rgba(59,130,246,.9), rgba(139,92,246,.9)); 
+            transition: width 5s linear; 
+            will-change: width; 
+        }
+        
+        /* AX: improved carousel */
+        .ax-carousel-container { position: relative; overflow: hidden; }
+        .ax-carousel-slide { 
+            position: absolute; inset: 0; 
+            opacity: 0; transition: opacity 600ms var(--ax-ease);
+            will-change: opacity;
+        }
+        .ax-carousel-slide.active { opacity: 1; }
+        
+        /* Mobile responsiveness improvements */
+        @media (max-width: 768px) {
+            .ax-backtotop {
+                width: 48px; height: 48px; font-size: 18px;
+                bottom: 4rem; right: 1rem;
+            }
+            .ax-carousel-container { height: 12rem; }
+            .ax-arrow { width: 32px; height: 32px; font-size: 16px; }
+        }
     </style>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
@@ -107,11 +241,11 @@
                     <a href="#" class="text-xl font-bold gradient-text">Adarsh Bajpai</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#about" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">About</a>
-                    <a href="#skills" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Skills</a>
-                    <a href="#projects" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Projects</a>
-                    <a href="#experience" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Roles & Responsibilities</a>
-                    <a href="#contact" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition">Contact</a>
+                    <a href="#about" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition ax-navlink">About</a>
+                    <a href="#skills" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition ax-navlink">Skills</a>
+                    <a href="#projects" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition ax-navlink">Projects</a>
+                    <a href="#experience" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition ax-navlink">Roles & Responsibilities</a>
+                    <a href="#contact" class="text-gray-800 dark:text-gray-300 hover:text-blue-600 transition ax-navlink">Contact</a>
                     <button id="theme-toggle" class="ml-2 text-gray-600 hover:text-blue-600 transition" aria-label="Toggle theme">
                         <i id="theme-toggle-icon" class="fas fa-moon"></i>
                     </button>
@@ -142,7 +276,7 @@
     <section id="about" class="pt-28 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
             <div class="md:w-1/3 w-full flex md:block justify-center">
-                <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden ring-4 ring-white/30 shadow-2xl">
+                <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden ring-4 ring-white/30 shadow-2xl ax-hover">
                     <img src="profilephotojpg.jpg" alt="Adarsh Bajpai" class="w-full h-full object-cover">
                 </div>
             </div>
@@ -150,7 +284,7 @@
                 <!-- EDIT: Name (About) -->
                 <h1 class="text-5xl md:text-7xl font-extrabold mb-3 gradient-text">Adarsh Bajpai</h1>
                 <!-- EDIT: Title (About) -->
-                <h2 class="text-xl md:text-2xl text-gray-900 dark:text-gray-200 mb-4">AI/ML Engineer | Developer | Designer</h2>
+                <h2 id="hero-name" data-text="AI/ML Engineer | Developer | Designer" class="text-xl md:text-2xl text-gray-900 dark:text-gray-200 mb-4">AI/ML Engineer | Developer | Designer</h2>
                 <!-- EDIT: Intro paragraph 1 (About) -->
                 <p class="text-base md:text-lg text-gray-800 dark:text-gray-200 mb-3">Hi, I'm a Computer Science Engineering student specializing in Artificial Intelligence at NIIT University (2022–2026).</p>
                 <!-- EDIT: Intro paragraph 2 (About) -->
@@ -168,9 +302,12 @@
         </div>
     </section>
 
+    <!-- Back to top button -->
+    <button id="backToTop" aria-label="Back to top" class="fixed bottom-6 right-6 text-white rounded-full">↑</button>
+
     <!-- Skills Section -->
     <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
-        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text">Skills</h2>
+        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text ax-gradient-title">Skills</h2>
         
         <!-- EDIT: Skills - Programming tiles -->
         <div class="mb-10">
@@ -238,31 +375,31 @@
             <h3 class="text-2xl md:text-3xl font-bold mb-6 text-pink-700 dark:text-pink-400">Design & Creative</h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
                 <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
-                    <i class="fab fa-figma text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <i class="fab fa-figma text-3xl text-pink-500 mb-3"></i>
                     <div class="text-gray-900 dark:text-gray-100">Figma</div>
                 </div>
                 <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
-                    <i class="fas fa-pen-nib text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <i class="fas fa-pen-nib text-3xl text-rose-400 mb-3"></i>
                     <div class="text-gray-900 dark:text-gray-100">Graphic Design</div>
                 </div>
                 <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
-                    <i class="fab fa-adobe text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <i class="fab fa-adobe text-3xl text-red-500 mb-3"></i>
                     <div class="text-gray-900 dark:text-gray-100">Adobe Photoshop</div>
                 </div>
                 <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
-                    <i class="fas fa-film text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <i class="fas fa-film text-3xl text-purple-500 mb-3"></i>
                     <div class="text-gray-900 dark:text-gray-100">Premiere Pro</div>
                 </div>
                 <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
-                    <i class="fas fa-sun text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <i class="fas fa-sun text-3xl text-sky-400 mb-3"></i>
                     <div class="text-gray-900 dark:text-gray-100">Adobe Lightroom</div>
                 </div>
                 <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
-                    <i class="fas fa-clapperboard text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <i class="fas fa-clapperboard text-3xl text-emerald-400 mb-3"></i>
                     <div class="text-gray-900 dark:text-gray-100">DaVinci Resolve</div>
                 </div>
                 <div class="bg-white/95 dark:bg-gray-900/70 ring-1 ring-gray-300 dark:ring-white/10 rounded-xl p-6 text-center shadow-lg w-44 flex flex-col items-center">
-                    <i class="fas fa-cube text-3xl text-gray-800 dark:text-gray-200 mb-3"></i>
+                    <i class="fas fa-cube text-3xl text-amber-400 mb-3"></i>
                     <div class="text-gray-900 dark:text-gray-100">Blender</div>
                 </div>
             </div>
@@ -272,18 +409,21 @@
     <!-- Projects Section -->
     <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <!-- EDIT: Projects section heading -->
-        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text">Projects</h2>
+        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text ax-gradient-title">Projects</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Project 1 -->
-            <div class="project-card bg-white/85 dark:bg-gray-800/85 backdrop-blur rounded-xl shadow-sm overflow-hidden transition duration-300 theme-transition">
-                <div class="h-48 bg-gradient-to-r from-blue-100 to-purple-100 flex items-center justify-center">
-                    <i class="fas fa-leaf text-6xl text-green-500"></i>
+            <div class="project-card bg-white/85 dark:bg-gray-800/85 backdrop-blur rounded-xl shadow-sm overflow-hidden transition duration-300 theme-transition" data-images="project_photos/Leaf Disease Detection System/Screenshot 2025-09-02 155116.png, project_photos/Leaf Disease Detection System/Screenshot 2025-09-03 012401.png, project_photos/Leaf Disease Detection System/Screenshot 2025-09-03 014652.png">
+                <div class="h-48 ax-carousel-container">
+                    <div class="ax-carousel-slide active">
+                        <img src="project_photos/Leaf Disease Detection System/Screenshot 2025-09-02 155116.png" alt="Leaf Disease Detection preview" class="w-full h-full object-cover">
+                    </div>
                 </div>
+                <div class="ax-progress"><div class="ax-progress-fill"></div></div>
                 <div class="p-6">
                     <h3 class="text-xl font-bold mb-2">Leaf Disease Detection System</h3>
                     <p class="text-gray-800 dark:text-gray-200 mb-4">
-                        Built a deep learning model using U2-Net + ResNet for detecting crop diseases and estimating severity. Extended into a web app with bilingual results (English/Hindi), image upload/capture, severity scoring, and farmer-friendly guidance.
+                        Built a deep learning model using U2-Net + ResNet for crop diseases detection and estimating severity using leaf images. Extended into a web app with chat-bot functionality and bilingual results (English/Hindi), image upload/capture, severity scoring, and farmer-friendly guidance.
                     </p>
                     <div class="flex flex-wrap gap-2 mb-4">
                         <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">Python</span>
@@ -299,10 +439,13 @@
             </div>
             
             <!-- Project 2 -->
-            <div class="project-card bg-white/85 dark:bg-gray-800/85 backdrop-blur rounded-xl shadow-sm overflow-hidden transition duration-300 theme-transition">
-                <div class="h-48 bg-gradient-to-r from-green-100 to-blue-100 flex items-center justify-center">
-                    <i class="fas fa-spa text-6xl text-teal-500"></i>
+            <div class="project-card bg-white/85 dark:bg-gray-800/85 backdrop-blur rounded-xl shadow-sm overflow-hidden transition duration-300 theme-transition" data-images="project_photos/Zen Garden – Habit Tracker/Screenshot 2025-05-01 024506.png, project_photos/Zen Garden – Habit Tracker/Screenshot 2025-05-01 035736.png, project_photos/Zen Garden – Habit Tracker/Screenshot 2025-05-01 042408.png, project_photos/Zen Garden – Habit Tracker/Screenshot 2025-05-02 013017.png, project_photos/Zen Garden – Habit Tracker/Screenshot 2025-05-02 070245.png">
+                <div class="h-48 ax-carousel-container">
+                    <div class="ax-carousel-slide active">
+                        <img src="project_photos/Zen Garden – Habit Tracker/Screenshot 2025-05-01 024506.png" alt="Zen Garden preview" class="w-full h-full object-cover">
+                    </div>
                 </div>
+                <div class="ax-progress"><div class="ax-progress-fill"></div></div>
                 <div class="p-6">
                     <h3 class="text-xl font-bold mb-2">Zen Garden – Habit Tracker</h3>
                     <p class="text-gray-800 dark:text-gray-200 mb-4">
@@ -311,7 +454,7 @@
                     <div class="flex flex-wrap gap-2 mb-4">
                         <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">React</span>
                         <span class="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">Framer Motion</span>
-                        <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">Productivity</span>
+                        <span class="px-3 py-1 bg-pink-100 text-pink-800 text-sm rounded-full">Figma</span>
                         <span class="px-3 py-1 bg-red-100 text-red-800 text-sm rounded-full">3D Animation</span>
                     </div>
                     <!-- EDIT: Project 2 link -->
@@ -325,7 +468,7 @@
 
     <!-- Roles & Responsibilities Section -->
     <section id="experience" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text">Roles & Responsibilities</h2>
+        <h2 class="section-heading text-4xl md:text-5xl mb-12 gradient-text ax-gradient-title">Roles & Responsibilities</h2>
         
         <div class="space-y-8 max-w-3xl mx-auto relative timeline">
             <!-- Future Opportunity -->
@@ -379,7 +522,7 @@
     <!-- Contact Section -->
     <section id="contact" class="py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
         <!-- EDIT: Contact section heading -->
-        <h2 class="section-heading text-4xl md:text-5xl mb-4 gradient-text">Get in touch</h2>
+        <h2 class="section-heading text-4xl md:text-5xl mb-4 gradient-text ax-gradient-title">Get in touch</h2>
         <p class="text-gray-800 dark:text-gray-300 mb-8">Feel free to reach out.</p>
         <div class="flex items-center justify-center gap-3 mb-8 text-gray-900 dark:text-gray-100">
             <i class="fas fa-envelope text-xl"></i>
@@ -483,6 +626,230 @@
         }
         themeToggle?.addEventListener('click', toggleTheme);
         themeToggleMobile?.addEventListener('click', toggleTheme);
+    </script>
+    <script>
+    (() => {
+      if (window.__axInit) return; window.__axInit = true;
+      document.documentElement.classList.add('js');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ---------- UTIL ----------
+      const qs = (s, r = document) => r.querySelector(s);
+      const qsa = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+      // ---------- HOVER ELEVATION ----------
+      const hoverTargets = [
+        // site-specific
+        '#skills .grid > div.rounded-xl', '[data-ax-skill]', '.project-card',
+        '#experience .timeline-item .bg-white\\/85', '#contact .grid > a',
+        // general fallbacks
+        'header img', '#about img', '#profile img', '.profile img', 'button', '.btn', 'a.button',
+        'a.bg-white\\/90', 'a.bg-gradient-to-r'
+      ];
+      qsa(hoverTargets.join(',')).forEach(el => {
+        el.classList.add('ax-hover', 'ax-glow');
+      });
+
+      // Optional floating on profile photo (keep subtle)
+      const profileImg = qs('#about img');
+      if (profileImg) profileImg.classList.add('ax-float');
+
+      // ---------- SCROLL REVEAL ----------
+      const revealTargets = qsa('section, .section, .project-card, [data-reveal], #skills .grid > div.rounded-xl, #experience .timeline-item .bg-white\\/85, #contact .grid > a');
+      if (!prefersReduced && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('ax-visible');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+        revealTargets.forEach(el => { el.classList.add('ax-reveal'); io.observe(el); });
+      } else {
+        revealTargets.forEach(el => el.classList.add('ax-visible'));
+      }
+
+      // ---------- TYPING EFFECT ----------
+      const heroEl = qs('#hero-name, .hero-name, [data-typed]');
+      if (heroEl) {
+        const fullText = heroEl.dataset.text || heroEl.textContent.trim();
+        heroEl.dataset.text = fullText;
+        if (!prefersReduced) {
+          heroEl.textContent = '';
+          heroEl.classList.add('ax-type-caret', 'ax-typing');
+          let i = 0;
+          const speed = 28;
+          const type = () => {
+            if (i <= fullText.length) {
+              heroEl.textContent = fullText.slice(0, i++);
+              setTimeout(type, speed);
+            } else {
+              // remove caret after finish to avoid stray bar
+              heroEl.classList.remove('ax-typing', 'ax-type-caret');
+            }
+          };
+          setTimeout(type, 180);
+        } else {
+          heroEl.textContent = fullText;
+        }
+      }
+
+      // ---------- PROJECT CAROUSEL ----------
+      function makeCarousel(card) {
+        const container = card.querySelector('.ax-carousel-container');
+        const listAttrEl = card.hasAttribute('data-images') ? card : container;
+        if (!container || !listAttrEl) return;
+
+        const sources = (listAttrEl.dataset.images || '').split(',').map(s => s.trim()).filter(Boolean);
+        if (sources.length < 2) return;
+
+        // Preload all images
+        sources.forEach(src => { const im = new Image(); im.src = src; });
+
+        let idx = 0;
+        let paused = false;
+        let hoverTimeout = null;
+        let ticker = null;
+        const progressFill = card.querySelector('.ax-progress-fill');
+
+        function animateProgress() {
+          if (!progressFill) return;
+          progressFill.style.transition = 'none';
+          progressFill.style.width = '0%';
+          void progressFill.offsetWidth; // force reflow
+          progressFill.style.transition = 'width 5s linear';
+          progressFill.style.width = '100%';
+        }
+
+        function show(nextIdx) {
+          const nextSrc = sources[nextIdx % sources.length];
+          const currentSlide = container.querySelector('.ax-carousel-slide.active');
+          if (!currentSlide) return;
+
+          // Create new slide
+          const newSlide = document.createElement('div');
+          newSlide.className = 'ax-carousel-slide';
+          const newImg = document.createElement('img');
+          newImg.src = nextSrc;
+          newImg.className = 'w-full h-full object-cover';
+          newImg.alt = 'Project preview';
+          newSlide.appendChild(newImg);
+          container.appendChild(newSlide);
+
+          // Wait for image to load, then transition
+          newImg.onload = () => {
+            newSlide.classList.add('active');
+            currentSlide.classList.remove('active');
+            
+            // Remove old slide after transition
+            setTimeout(() => {
+              if (currentSlide.parentNode) {
+                currentSlide.remove();
+              }
+            }, 600);
+          };
+
+          idx = nextIdx % sources.length;
+          animateProgress();
+        }
+
+        function start() {
+          if (prefersReduced) return;
+          stop();
+          animateProgress();
+          ticker = setInterval(() => show(idx + 1), 5000);
+        }
+        
+        function stop() { 
+          if (ticker) { 
+            clearInterval(ticker); 
+            ticker = null; 
+          }
+          if (progressFill) {
+            progressFill.style.transition = 'none';
+            progressFill.style.width = '0%';
+          }
+        }
+        
+        function pauseAndShowControls() {
+          card.classList.add('ax-carousel-hover');
+          paused = true; 
+          stop();
+          if (hoverTimeout) { clearTimeout(hoverTimeout); hoverTimeout = null; }
+        }
+        
+        function resumeAfterDelay() {
+          card.classList.remove('ax-carousel-hover');
+          paused = false;
+          if (hoverTimeout) { clearTimeout(hoverTimeout); }
+          hoverTimeout = setTimeout(() => { if (!paused) start(); }, 5000);
+        }
+
+        function ensureArrows() {
+          if (card.querySelector('.ax-arrow')) return;
+          const left = document.createElement('button');
+          const right = document.createElement('button');
+          left.className = 'ax-arrow ax-arrow-left'; 
+          left.setAttribute('aria-label', 'Previous image');
+          right.className = 'ax-arrow ax-arrow-right'; 
+          right.setAttribute('aria-label', 'Next image');
+          left.innerHTML = '&#10094;'; 
+          right.innerHTML = '&#10095;';
+          
+          left.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            pauseAndShowControls(); 
+            show((idx - 1 + sources.length) % sources.length); 
+          });
+          right.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            pauseAndShowControls(); 
+            show(idx + 1); 
+          });
+          
+          container.appendChild(left); 
+          container.appendChild(right);
+        }
+
+        card.addEventListener('mouseenter', () => { 
+          ensureArrows(); 
+          pauseAndShowControls(); 
+        });
+        card.addEventListener('mouseleave', () => { 
+          resumeAfterDelay(); 
+        });
+
+        start();
+      }
+
+      qsa('.project-card[data-images]').forEach(card => {
+        makeCarousel(card);
+      });
+
+      // ---------- BUTTON MICRO-INTERACTIONS ----------
+      qsa('button, .btn, a.button, a.btn, a[href^="#"], a[download]').forEach(btn => btn.classList.add('ax-hover', 'ax-glow'));
+
+      // ---------- BACK TO TOP (optional existing element) ----------
+      const backBtn = qs('#backToTop, .back-to-top, [data-backtotop]');
+      if (backBtn) {
+        backBtn.classList.add('ax-backtotop');
+        const onScroll = () => {
+          const show = window.scrollY > 380;
+          backBtn.classList.toggle('ax-show', show);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        
+        // Add click handler
+        backBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+    })();
     </script>
 </body>
 </html>
