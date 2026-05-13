@@ -1,0 +1,6 @@
+{
+  "name": "Sanity – Real vs Fake News Detection",
+  "category": "NLP & Web App",
+  "tools": ["DistilBERT", "Flask", "React", "NLP", "Groq LLM"],
+  "description": "AI-powered news classification system using a fine-tuned DistilBERT model. Supports text, PDF, and URL inputs with confidence threshold logic and automatic LLM fallback."
+}

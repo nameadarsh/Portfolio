@@ -1,0 +1,6 @@
+{
+  "name": "Zen – Habit Tracker",
+  "category": "Full-Stack Web App",
+  "tools": ["React", "Node.js", "Three.js", "APIs"],
+  "description": "Full-stack productivity web application with gamified habit tracking. Implemented interactive 3D garden visualization using Three.js."
+}
