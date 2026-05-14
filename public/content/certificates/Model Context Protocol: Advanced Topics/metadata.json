@@ -1,0 +1,11 @@
+{
+  "id": "mcp-advanced",
+  "title": "Model Context Protocol: Advanced Topics",
+  "issuer": "Model Context Protocol",
+  "details": [
+    "Advanced MCP Architecture",
+    "Custom Tool Implementation",
+    "Resource Management & Context Injection",
+    "Security & Transport Protocols"
+  ]
+}

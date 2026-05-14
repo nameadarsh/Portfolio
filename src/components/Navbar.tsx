@@ -28,11 +28,11 @@ const Navbar = () => {
       }}
     >
       <div style={{ fontWeight: 700, fontSize: '20px', letterSpacing: '-0.5px' }}>
-        Adarsh <span className="text-gradient-accent">Bajpai</span>
+        <span className="text-gradient-accent">Adarsh Bajpai</span>
       </div>
       
       <div style={{ display: 'flex', gap: '30px', fontSize: '16px', fontWeight: 600, letterSpacing: '0.5px' }}>
-        {['About', 'Skills', 'Experience', 'Projects'].map((item) => (
+        {['About', 'Skills', 'Experience', 'Projects', 'Certificates'].map((item) => (
           <button
             key={item}
             onClick={() => scrollTo(item.toLowerCase())}
