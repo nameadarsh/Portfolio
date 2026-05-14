@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import SectionTitle from './SectionTitle';
 import { useContent } from '../hooks/useContent';
 
+const SECTION_H_INSET = 'clamp(1rem, 3vw, 2rem)';
+
 const Certificates = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -23,42 +25,66 @@ const Certificates = () => {
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setScrollProgress(scrollLeft / (scrollWidth - clientWidth) || 0);
+      const max = scrollWidth - clientWidth;
+      setScrollProgress(max > 0 ? scrollLeft / max : 0);
     }
   };
 
   return (
-    <section id="certificates" style={{ padding: '10vh 0 15vh 0', overflow: 'hidden' }}>
+    <section
+      id="certificates"
+      style={{
+        paddingTop: '10vh',
+        paddingBottom: '15vh',
+        paddingLeft: SECTION_H_INSET,
+        paddingRight: SECTION_H_INSET,
+        overflow: 'hidden',
+      }}
+    >
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
         <SectionTitle style={{ marginBottom: 0 }}>Certifications</SectionTitle>
-        
+
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <button 
+          <button
+            type="button"
             className="hover-target"
             onClick={() => scroll('left')}
             disabled={scrollProgress <= 0.01}
             style={{
-              width: '40px', height: '40px', borderRadius: '50%',
-              background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)',
-              color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              background: 'var(--bg-elevated)',
+              border: '1px solid var(--border-subtle)',
+              color: 'var(--text-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               cursor: scrollProgress <= 0.01 ? 'not-allowed' : 'pointer',
               opacity: scrollProgress <= 0.01 ? 0.5 : 1,
-              transition: 'background 0.3s'
+              transition: 'background 0.3s',
             }}
           >
             <FiChevronLeft size={20} />
           </button>
-          <button 
+          <button
+            type="button"
             className="hover-target"
             onClick={() => scroll('right')}
             disabled={scrollProgress >= 0.99}
             style={{
-              width: '40px', height: '40px', borderRadius: '50%',
-              background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)',
-              color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              background: 'var(--bg-elevated)',
+              border: '1px solid var(--border-subtle)',
+              color: 'var(--text-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               cursor: scrollProgress >= 0.99 ? 'not-allowed' : 'pointer',
               opacity: scrollProgress >= 0.99 ? 0.5 : 1,
-              transition: 'background 0.3s'
+              transition: 'background 0.3s',
             }}
           >
             <FiChevronRight size={20} />
@@ -66,13 +92,14 @@ const Certificates = () => {
         </div>
       </div>
 
-      <div 
+      <div
         ref={scrollRef}
+        className="carousel-track"
         onScroll={handleScroll}
         style={{
           display: 'flex',
           gap: '2rem',
-          padding: '0 5vw 2rem 0',
+          padding: `0 max(5vw, 1rem) 2rem max(5vw, 1rem)`,
           overflowX: 'auto',
           scrollSnapType: 'x mandatory',
           scrollbarWidth: 'none',
@@ -80,18 +107,17 @@ const Certificates = () => {
         }}
       >
         {certificates.map((cert, index) => (
-          <div 
-            key={index}
+          <div
+            key={cert.id || index}
             style={{
               minWidth: 'clamp(300px, 45vw, 550px)',
               width: 'clamp(300px, 45vw, 550px)',
               scrollSnapAlign: 'start',
               flexShrink: 0,
               display: 'flex',
-              marginLeft: index === 0 ? '5vw' : '0'
             }}
           >
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
@@ -127,17 +153,30 @@ const Certificates = () => {
               <div style={{ color: 'var(--accent-cyan)', fontSize: '1rem', fontWeight: 500, marginBottom: '1.5rem', flexShrink: 0 }}>
                 {cert.issuer}
               </div>
-              
+
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                 {cert.details.map((detail, idx) => (
-                  <li key={idx} style={{ 
-                    color: 'var(--text-secondary)',
-                    lineHeight: 1.5,
-                    position: 'relative',
-                    paddingLeft: '1.2rem',
-                    fontSize: '0.95rem'
-                  }}>
-                    <span style={{ position: 'absolute', left: 0, top: '0.5rem', width: '4px', height: '4px', borderRadius: '50%', background: 'var(--border-subtle)' }} />
+                  <li
+                    key={idx}
+                    style={{
+                      color: 'var(--text-secondary)',
+                      lineHeight: 1.5,
+                      position: 'relative',
+                      paddingLeft: '1.2rem',
+                      fontSize: '0.95rem',
+                    }}
+                  >
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: '0.5rem',
+                        width: '4px',
+                        height: '4px',
+                        borderRadius: '50%',
+                        background: 'var(--border-subtle)',
+                      }}
+                    />
                     {detail}
                   </li>
                 ))}

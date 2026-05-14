@@ -1,7 +1,42 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type CSSProperties } from 'react';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { FiMail, FiLinkedin, FiGithub, FiShare2, FiCheck, FiArrowUp, FiDownload } from 'react-icons/fi';
 import { useContent } from '../hooks/useContent';
+import { PROFILE } from '../constants/links';
+
+const RESUME_GLASS: CSSProperties = {
+  height: '50px',
+  borderRadius: '100px',
+  padding: '0 1.5rem',
+  background: 'rgba(248, 249, 250, 0.1)',
+  backdropFilter: 'blur(14px)',
+  WebkitBackdropFilter: 'blur(14px)',
+  border: '1px solid rgba(255, 255, 255, 0.22)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  color: 'var(--text-primary)',
+  transition: 'background 0.35s ease, border-color 0.35s ease, color 0.35s ease, transform 0.3s ease, box-shadow 0.35s ease',
+  cursor: 'pointer',
+  fontWeight: 600,
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+};
+
+const resumeHover = (el: HTMLButtonElement) => {
+  el.style.background = 'rgba(248, 249, 250, 0.98)';
+  el.style.color = 'var(--bg-deep)';
+  el.style.borderColor = 'rgba(255, 255, 255, 0.92)';
+  el.style.transform = 'translateY(-5px)';
+  el.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.25)';
+};
+
+const resumeRest = (el: HTMLButtonElement) => {
+  el.style.background = 'rgba(248, 249, 250, 0.1)';
+  el.style.color = 'var(--text-primary)';
+  el.style.borderColor = 'rgba(255, 255, 255, 0.22)';
+  el.style.transform = 'translateY(0)';
+  el.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2)';
+};
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
@@ -100,7 +135,7 @@ const Contact = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             style={{ display: 'flex', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}
           >
-            <a href="mailto:adarsh@example.com" className="hover-target" style={{
+            <a href={PROFILE.mailto} className="hover-target" style={{
               width: '60px', height: '60px', borderRadius: '50%',
               background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)',
@@ -111,7 +146,7 @@ const Contact = () => {
             >
               <FiMail size={24} />
             </a>
-            <a href="#" className="hover-target" style={{
+            <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="hover-target" style={{
               width: '60px', height: '60px', borderRadius: '50%',
               background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)',
@@ -122,7 +157,7 @@ const Contact = () => {
             >
               <FiLinkedin size={24} />
             </a>
-            <a href="#" className="hover-target" style={{
+            <a href={PROFILE.github} target="_blank" rel="noreferrer" className="hover-target" style={{
               width: '60px', height: '60px', borderRadius: '50%',
               background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)',
@@ -197,14 +232,9 @@ const Contact = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-            <button onClick={() => setIsResumeOpen(!isResumeOpen)} className="hover-target" style={{
-              height: '50px', borderRadius: '100px', padding: '0 1.5rem',
-              background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)',
-              display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)',
-              transition: 'all 0.3s ease', cursor: 'pointer', fontWeight: 600
-            }}
-            onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--accent-cyan)'; e.currentTarget.style.color = 'var(--accent-cyan)'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
-            onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            <button type="button" onClick={() => setIsResumeOpen(!isResumeOpen)} className="hover-target" style={RESUME_GLASS}
+            onMouseOver={e => resumeHover(e.currentTarget)}
+            onMouseOut={e => resumeRest(e.currentTarget)}
             >
               Resume <FiDownload size={18} />
             </button>

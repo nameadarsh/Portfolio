@@ -2,5 +2,7 @@
   "name": "Leaf Disease Detection System",
   "category": "Deep Learning & Web App",
   "tools": ["Python", "U2-Net", "ResNet", "Flask", "React", "OpenCV", "NLP"],
-  "description": "Built a hybrid deep learning model combining U2-Net and ResNet for crop disease detection and severity estimation. Achieved 96% classification accuracy and reduced misclassification rate by ~15%."
+  "description": "Built a hybrid deep learning model combining U2-Net and ResNet for crop disease detection and severity estimation. Achieved 96% classification accuracy and reduced misclassification rate by ~15%.",
+  "githubUrl": "https://github.com/nameadarsh/Leaf_Disease_Detection_System",
+  "order": 1
 }

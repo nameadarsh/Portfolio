@@ -2,5 +2,7 @@
   "name": "Real-Time Multi-Object Tracking Pipeline",
   "category": "Computer Vision",
   "tools": ["RT-DETR", "ByteTrack", "OpenCV", "Pandas", "PyYAML"],
-  "description": "End-to-end tracking pipeline using RT-DETR-R50 and ByteTrack designed specifically for Indian road environments. Detects and tracks vehicles, pedestrians, and animals with stable persistent IDs across video streams."
+  "description": "End-to-end tracking pipeline using RT-DETR-R50 and ByteTrack designed specifically for Indian road environments. Detects and tracks vehicles, pedestrians, and animals with stable persistent IDs across video streams.",
+  "githubUrl": "https://github.com/nameadarsh/Real-Time-Multi-Object-Tracking-with-RT-DETR-ByteTrack",
+  "order": 3
 }

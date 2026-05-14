@@ -72,6 +72,15 @@ a {
   padding: 0 5vw;
 }
 
+/* Horizontal carousels (Projects, Certificates) */
+.carousel-track {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
 /* Section spacing */
 section {
   padding: 15vh 0;
@@ -91,4 +100,10 @@ section {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+  .show-on-desktop {
+    display: inline !important;
+  }
 }

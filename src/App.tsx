@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiArrowLeft, FiDownload, FiGithub } from 'react-icons/fi';
+import { FiArrowLeft, FiDownload, FiGithub, FiExternalLink } from 'react-icons/fi';
 import Lenis from 'lenis';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -32,8 +32,8 @@ const AllProjects = () => {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
         {projectsData.map((project, index) => (
-          <motion.div 
-            key={index}
+          <motion.div
+            key={project.id || index}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -50,14 +50,35 @@ const AllProjects = () => {
             )}
             
             <h3 style={{ fontSize: '2rem', fontWeight: 600, marginBottom: '1.5rem' }}>{project.name}</h3>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '800px' }}>{project.description}</p>
+            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '800px', whiteSpace: 'pre-line' }}>{project.description}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', marginBottom: '2rem' }}>
               {project.tools.map(tool => (
                 <span key={tool} style={{ color: 'var(--accent-cyan)', fontSize: '0.9rem', fontFamily: 'monospace' }}>{tool}</span>
               ))}
             </div>
-            <div style={{ display: 'flex', gap: '1.5rem' }}>
-              <a href="#" className="hover-target" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)' }}><FiGithub /> Code</a>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', alignItems: 'center' }}>
+              {project.githubUrl ? (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover-target"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)' }}
+                >
+                  <FiGithub /> GitHub
+                </a>
+              ) : null}
+              {project.liveUrl ? (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover-target"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)' }}
+                >
+                  <FiExternalLink /> Live App
+                </a>
+              ) : null}
             </div>
           </motion.div>
         ))}
@@ -70,12 +91,19 @@ const CertificateViewer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { content } = useContent();
-  const certificate = content?.certificates.find(c => c.id === id);
-  
+  const certificate = content?.certificates.find((c) => c.id === id);
+  const [pdfReady, setPdfReady] = useState(false);
+
+  useEffect(() => {
+    setPdfReady(false);
+  }, [id, certificate?.pdf]);
+
+  const pdfSrc = certificate?.pdf ? `${certificate.pdf}#toolbar=1` : null;
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '2rem 5vw', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-deep)' }}>
-        <button onClick={() => navigate(-1)} className="hover-target" style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '1.1rem' }}>
+      <div style={{ padding: '2rem 5vw', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-deep)', flexWrap: 'wrap', gap: '1rem' }}>
+        <button type="button" onClick={() => navigate(-1)} className="hover-target" style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '1.1rem' }}>
           <FiArrowLeft /> Back
         </button>
         {certificate?.pdf ? (
@@ -83,29 +111,71 @@ const CertificateViewer = () => {
             <FiDownload /> Download PDF
           </a>
         ) : (
-          <button disabled style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'not-allowed', fontWeight: 600 }}>
+          <button type="button" disabled style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'not-allowed', fontWeight: 600 }}>
             <FiDownload /> No PDF Available
           </button>
         )}
       </div>
-      <div style={{ flexGrow: 1, padding: '4rem 5vw', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-        <div className="glass" style={{ width: '100%', maxWidth: '900px', borderRadius: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid var(--border-subtle)', padding: '3rem', margin: '0 auto' }}>
-          {certificate?.thumbnail ? (
-            <img src={certificate.thumbnail} alt={certificate.title} style={{ width: '100%', maxHeight: '60vh', objectFit: 'contain', borderRadius: '16px', marginBottom: '3rem' }} />
+      <div style={{ flexGrow: 1, padding: 'clamp(1.5rem, 4vw, 4rem) max(5vw, 1rem)', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+        <div className="glass" style={{ width: '100%', maxWidth: '960px', borderRadius: '32px', display: 'flex', flexDirection: 'column', alignItems: 'stretch', border: '1px solid var(--border-subtle)', padding: 'clamp(1.5rem, 3vw, 3rem)', margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '0.5rem', textAlign: 'center', color: 'var(--text-primary)' }}>{certificate?.title}</h2>
+          <p style={{ color: 'var(--accent-cyan)', fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', marginBottom: '1.75rem', fontWeight: 500, textAlign: 'center' }}>{certificate?.issuer}</p>
+
+          {pdfSrc ? (
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: 'min(72vh, 720px)',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                background: 'var(--bg-deep)',
+                border: '1px solid var(--border-subtle)',
+                marginBottom: '2rem',
+              }}
+            >
+              {!pdfReady && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                    background: 'linear-gradient(145deg, var(--bg-elevated), var(--bg-deep))',
+                    zIndex: 1,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '50%',
+                      border: '2px solid rgba(0, 245, 212, 0.25)',
+                      borderTopColor: 'var(--accent-cyan)',
+                      animation: 'spin 0.9s linear infinite',
+                    }}
+                  />
+                  <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Loading certificate…</span>
+                </div>
+              )}
+              <iframe title={certificate?.title ?? 'Certificate PDF'} src={pdfSrc} style={{ width: '100%', height: 'min(72vh, 720px)', border: 'none', display: 'block', opacity: pdfReady ? 1 : 0, transition: 'opacity 0.45s ease' }} onLoad={() => setPdfReady(true)} />
+            </div>
+          ) : certificate?.thumbnail ? (
+            <img src={certificate.thumbnail} alt={certificate.title} style={{ width: '100%', maxHeight: '60vh', objectFit: 'contain', borderRadius: '16px', marginBottom: '2rem' }} />
           ) : (
-            <div style={{ height: '30vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-deep)', width: '100%', borderRadius: '16px', marginBottom: '3rem', border: '1px dashed var(--border-subtle)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>No Image Available</span>
+            <div style={{ minHeight: '28vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-deep)', width: '100%', borderRadius: '16px', marginBottom: '2rem', border: '1px dashed var(--border-subtle)' }}>
+              <span style={{ color: 'var(--text-secondary)' }}>No preview available</span>
             </div>
           )}
-          
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem', textAlign: 'center', color: 'var(--text-primary)' }}>{certificate?.title}</h2>
-          <p style={{ color: 'var(--accent-cyan)', fontSize: '1.2rem', marginBottom: '3rem', fontWeight: 500 }}>{certificate?.issuer}</p>
-          
+
           {certificate?.details && certificate.details.length > 0 && (
-            <div style={{ width: '100%', maxWidth: '600px' }}>
+            <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {certificate.details.map((detail, idx) => (
-                  <li key={idx} style={{ color: 'var(--text-secondary)', lineHeight: 1.6, position: 'relative', paddingLeft: '1.5rem', fontSize: '1.1rem' }}>
+                  <li key={idx} style={{ color: 'var(--text-secondary)', lineHeight: 1.6, position: 'relative', paddingLeft: '1.5rem', fontSize: '1.05rem' }}>
                     <span style={{ position: 'absolute', left: 0, top: '0.7rem', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-purple)' }} />
                     {detail}
                   </li>

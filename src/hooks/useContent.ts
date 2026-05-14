@@ -21,6 +21,14 @@ export interface Project {
   tools: string[];
   description: string;
   thumbnail: string | null;
+  /** Source repository */
+  githubUrl?: string | null;
+  /** Public demo / deployed app */
+  liveUrl?: string | null;
+  /** Lower sorts first (from content metadata) */
+  order?: number;
+  /** Highlight styling on home carousel */
+  featured?: boolean;
 }
 
 export interface ContentManifest {

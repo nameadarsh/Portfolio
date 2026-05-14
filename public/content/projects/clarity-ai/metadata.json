@@ -1,0 +1,10 @@
+{
+  "name": "Clarity – Modern Guidance, Grounded in Wisdom",
+  "category": "Generative AI & RAG",
+  "tools": ["FastAPI", "React", "FAISS", "RAG", "LLMs", "TypeScript"],
+  "description": "• Built a multilingual RAG-based guidance platform that retrieves and reranks Bhagavad Gita verses using Top-K semantic search to deliver contextually relevant answers for modern-life queries.\n\n• Developed an end-to-end AI pipeline where retrieved verses are processed through LLM-based reasoning to generate grounded responses with real-time TTS speech output across 11 regional languages.\n\n• Improved scalability and response reliability by serving static scripture data from the frontend and engineering an async FastAPI + SSE streaming backend with background warmup orchestration.",
+  "githubUrl": "https://github.com/nameadarsh/Bhagavad_Gita_for_Modern_Life",
+  "liveUrl": "https://bhagavad-gita-for-modern-life.vercel.app",
+  "order": 0,
+  "featured": true
+}

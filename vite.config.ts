@@ -85,6 +85,9 @@ function generateManifest() {
         });
       }
     }
+    manifest.projects.sort(
+      (a: { order?: number }, b: { order?: number }) => (a.order ?? 100) - (b.order ?? 100)
+    );
   }
 
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
