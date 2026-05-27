@@ -3,7 +3,7 @@ import SectionTitle from './SectionTitle';
 
 const experiences = [
   {
-    title: 'AI Engineer',
+    title: 'Artificial Intelligence Engineer',
     company: 'Global Infoventures Pvt. Ltd.',
     date: 'Jan 2026 – Present',
     details: [
@@ -18,9 +18,27 @@ const experiences = [
     details: []
   },
   {
-    title: 'High School Diploma, PCM',
+    title: 'Web Developer & Designer',
+    company: 'Rio Traders',
+    date: 'Jun 2025 – Aug 2025',
+    details: []
+  },
+  {
+    title: 'Web Developer',
+    company: 'Freelance',
+    date: 'Aug 2022 – Mar 2023',
+    details: []
+  },
+  {
+    title: 'High School, PCM',
     company: "St. Anselm's Pink City Sr. Sec. School",
     date: 'Aug 2008 – Apr 2022',
+    details: []
+  },
+  {
+    title: 'Digital Designer',
+    company: 'Freelance',
+    date: 'Jul 2020 – Aug 2021',
     details: []
   }
 ];
