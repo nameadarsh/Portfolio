@@ -6,10 +6,7 @@ const experiences = [
     title: 'Artificial Intelligence Engineer',
     company: 'Global Infoventures Pvt. Ltd.',
     date: 'Jan 2026 – Present',
-    details: [
-      'Developed a RAG pipeline for document querying and question answering with support for bilingual text. Implemented chunking strategies to preserve context and improve response quality.',
-      'Contributed to the development of a scalable Learning Management System (LMS). Worked on a joint project with TCS serving ~2 lakh users across multiple universities. Contributed to scalable backend and AI integration workflows.'
-    ]
+    details: []
   },
   {
     title: 'B.Tech in Computer Science (AI & ML)',
