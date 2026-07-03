@@ -1,7 +1,8 @@
-import type { ChatMessage } from './types';
-import { getSystemPrompt } from './promptProvider';
-import { createLLMProvider } from './llmProvider';
-import { createNormalizedSSEStream } from './streamTransform';
+/// <reference types="node" />
+import type { ChatMessage } from './types.js';
+import { getSystemPrompt } from './promptProvider.js';
+import { createLLMProvider } from './llmProvider.js';
+import { createNormalizedSSEStream } from './streamTransform.js';
 
 const MAX_HISTORY = 24;
 const MAX_MESSAGE_LENGTH = 4000;

@@ -1,4 +1,5 @@
-import type { ChatMessage } from './types';
+/// <reference types="node" />
+import type { ChatMessage } from './types.js';
 
 export interface LLMStreamOptions {
   messages: ChatMessage[];

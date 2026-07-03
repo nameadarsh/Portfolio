@@ -1,4 +1,4 @@
-import type { StreamChunk } from './types';
+import type { StreamChunk } from './types.js';
 
 /**
  * Transforms an OpenAI-compatible SSE stream from the LLM into our normalized SSE format.
