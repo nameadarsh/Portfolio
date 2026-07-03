@@ -57,8 +57,20 @@ export async function handleChatRequest(body: unknown): Promise<Response> {
         Connection: 'keep-alive',
       },
     });
-  } catch (error) {
-    console.error('[chatHandler]', error);
+  } catch (error: any) {
+    console.error('[chatHandler] Error caught:', error);
+    if (error instanceof Error) {
+      console.error('[chatHandler] Stack:', error.stack);
+    }
+    console.error('[chatHandler] Diagnostics:', JSON.stringify({
+      message: error?.message,
+      status: error?.status || error?.response?.status,
+      env: {
+        hasGroqKey: !!process.env.GROQ_API_KEY,
+        nodeEnv: process.env.NODE_ENV,
+      }
+    }, null, 2));
+
     const errMsg = error instanceof Error ? error.message : '';
     const message =
       errMsg.includes('GROQ_API_KEY') ||

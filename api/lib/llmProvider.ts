@@ -46,6 +46,11 @@ export class GroqProvider implements LLMProvider {
 
     if (!response.ok) {
       const errorBody = await response.text().catch(() => '');
+      console.error('[LLMProvider] Groq API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorBody
+      });
       throw new Error(`Groq API error (${response.status}): ${errorBody || response.statusText}`);
     }
 
