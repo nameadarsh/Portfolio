@@ -1,9 +1,9 @@
 {
-  "profileImage": "/content/profile/profilephotojpg.jpg",
+  "profileImage": "/content/profile/profilephoto.jpg",
   "resumes": [
     {
       "type": "ai-ml",
-      "url": "/content/resume/ai-ml/Adarsh_Bajpai_AIML_CV.pdf"
+      "url": "/content/resume/ai-ml/Adarsh Bajpai CV.pdf"
     },
     {
       "type": "sde",

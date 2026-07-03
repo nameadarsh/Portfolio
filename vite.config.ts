@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
+import { handleChatRequest } from './api/lib/chatHandler';
 
 function generateManifest() {
   const contentDir = path.resolve(__dirname, 'public/content');
@@ -36,7 +37,7 @@ function generateManifest() {
       const pdf = files.find(f => f.match(/\.pdf$/i));
       if (pdf) {
         manifest.resumes.push({
-          type: folder, // e.g. "ai-ml", "sde"
+          type: folder,
           url: `/content/resume/${folder}/${pdf}`
         });
       }
@@ -101,7 +102,6 @@ function contentScannerPlugin() {
       generateManifest();
     },
     handleHotUpdate({ file }: { file: string }) {
-      // Re-run if anything in public/content changes
       if (file.includes('/public/content/') && !file.endsWith('manifest.json')) {
         generateManifest();
       }
@@ -109,7 +109,77 @@ function contentScannerPlugin() {
   };
 }
 
+function chatDevApiPlugin(): Plugin {
+  return {
+    name: 'chat-dev-api',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (!req.url?.startsWith('/api/chat')) return next();
+
+        if (req.method === 'OPTIONS') {
+          res.statusCode = 204;
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+          res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+          res.end();
+          return;
+        }
+
+        if (req.method !== 'POST') {
+          res.statusCode = 405;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Method not allowed' }));
+          return;
+        }
+
+        const chunks: Buffer[] = [];
+        req.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+        req.on('end', async () => {
+          try {
+            const body = JSON.parse(Buffer.concat(chunks).toString('utf-8'));
+            const response = await handleChatRequest(body);
+
+            res.statusCode = response.status;
+            response.headers.forEach((value, key) => {
+              if (key.toLowerCase() === 'connection') return;
+              res.setHeader(key, value);
+            });
+
+            if (!response.body) {
+              res.end(await response.text());
+              return;
+            }
+
+            const reader = response.body.getReader();
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              res.write(Buffer.from(value));
+            }
+            res.end();
+          } catch (err) {
+            console.error('[chat-dev-api]', err);
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: 'Something went wrong. Please try again.' }));
+          }
+        });
+      });
+    },
+  };
+}
+
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), contentScannerPlugin()],
-})
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  if (env.GROQ_API_KEY) {
+    process.env.GROQ_API_KEY = env.GROQ_API_KEY;
+  }
+  if (env.GROQ_MODEL) {
+    process.env.GROQ_MODEL = env.GROQ_MODEL;
+  }
+
+  return {
+    plugins: [react(), contentScannerPlugin(), chatDevApiPlugin()],
+  };
+});

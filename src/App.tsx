@@ -13,6 +13,7 @@ import Contact from './components/Contact';
 import Navbar from './components/Navbar';
 import CustomCursor from './components/CustomCursor';
 import GlobalBackground from './components/GlobalBackground';
+import FloatingActions from './components/FloatingActions';
 import { useContent } from './hooks/useContent';
 import './App.css';
 
@@ -215,6 +216,8 @@ function App() {
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
+      allowNestedScroll: true,
+      prevent: (node) => node.closest?.('.chat-shell--open') != null,
     });
 
     function raf(time: number) {
@@ -237,6 +240,7 @@ function App() {
     <>
       <GlobalBackground />
       <CustomCursor />
+      <FloatingActions />
       
       {/* Only show Navbar on Home page, or adjust to be sticky across all */}
       {location.pathname === '/' && <Navbar />}
